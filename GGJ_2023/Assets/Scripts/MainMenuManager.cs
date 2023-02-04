@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+//using DG.Tweening;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //DOTween.Init(autoKillMode, useSafeMode, logBehaviour);
         buttonsToActivate.gameObject.SetActive(false);
         canActivateButtons = true;
         gameSelectButtons.gameObject.SetActive(false);
@@ -28,6 +30,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space) && canActivateButtons)
         {
+                        
             buttonsToActivate.gameObject.SetActive(true);
             canActivateButtons = false;
         }
