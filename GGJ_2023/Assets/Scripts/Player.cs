@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent (typeof(Controller2D))]
@@ -9,6 +10,10 @@ public class Player : MonoBehaviour
     [SerializeField] float minJumpHeight = 1;
     [SerializeField] float timeToJumpApex = .4f;
 
+    [Header ("Digging")]
+    [SerializeField] LayerMask digLayer;
+    [SerializeField] float range;
+    [SerializeField] float radius;
     [SerializeField] float digDuration;
 
     float accelerationTimeAirborne = .2f;
@@ -25,6 +30,8 @@ public class Player : MonoBehaviour
     Controller2D controller;
 
     Vector2 directionalInput;
+    Vector2 lastDirection;
+    Vector3 digDirection;
     bool wallSliding;
     int wallDirX;
 
@@ -88,11 +95,22 @@ public class Player : MonoBehaviour
     void HandleDigging()
     {
         resetState.Tick(Time.deltaTime);
+
+        List<Collider2D> collisions = Physics2D.OverlapCircleAll(transform.position + (digDirection * range), radius, digLayer).ToList();
+        foreach (Collider2D collider in collisions)
+        {
+            Debug.Log("Player.cs target " + collider.gameObject.name);
+            Destroy(collider.gameObject);
+        }
     }
 
     public void SetDirectionalInput(Vector2 input)
     {
         directionalInput = input;
+
+        if (input == Vector2.zero) return;
+
+        lastDirection = input;
     }
 
     public void OnJumpInputDown()
@@ -127,6 +145,7 @@ public class Player : MonoBehaviour
     public void Dig()
     {
         state = State.Digging;
+        digDirection = lastDirection;
         resetState.Begin();
     }
 

@@ -5,15 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Destructible : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] GameObject destructionParticle;
 
-    // Update is called once per frame
-    void Update()
+    void OnDestroy()
     {
-        
+        if(!this.gameObject.scene.isLoaded) return;
+        Instantiate(destructionParticle, transform.position, Quaternion.identity);
     }
 }
