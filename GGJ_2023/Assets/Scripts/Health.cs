@@ -18,6 +18,8 @@ public class Health : MonoBehaviour
     int currentHealth;
     int previousHealth;
 
+    Timer invincibilityTimer;
+
     public int CurrentHP {get {return currentHealth; }}
     public int PreviousHP {get {return previousHealth; }}
     public int MaxHP {get {return maxHealth; }}
@@ -26,18 +28,15 @@ public class Health : MonoBehaviour
     {
         currentHealth = maxHealth;
         previousHealth = currentHealth;
+
+        invincibilityTimer = new Timer(invincibileTimer, () => {
+            invincible = false;
+        });
     }
 
     void Update()
     {
-        if (timer > 0)
-        {
-            timer -= Time.deltaTime;
-        }
-        else
-        {
-            invincible = false; 
-        }
+        invincibilityTimer.Tick(Time.deltaTime);
     }
 
     public void TakeDamage(int damage)
@@ -57,7 +56,8 @@ public class Health : MonoBehaviour
 
             previousHealth = currentHealth;
             invincible = true; 
-            timer = invincibileTimer;
+            invincibilityTimer.Begin();
+            //timer = invincibileTimer;
         }
     }
 }

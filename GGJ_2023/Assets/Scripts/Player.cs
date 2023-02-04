@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] LayerMask digLayer;
     [SerializeField] float range;
     [SerializeField] float radius;
+    [SerializeField] float digTime;
     [SerializeField] float digDuration;
 
     float accelerationTimeAirborne = .2f;
@@ -44,6 +45,7 @@ public class Player : MonoBehaviour
 
     State state = State.Normal;
 
+    Timer digTimer;
     Timer resetState;
     void Start()
     {
@@ -53,6 +55,14 @@ public class Player : MonoBehaviour
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         minJumpVelocity = Mathf.Sqrt(2*Mathf.Abs(gravity) * minJumpHeight);
 
+        digTimer = new Timer(digTime, () => {
+            List<Collider2D> collisions = Physics2D.OverlapCircleAll(transform.position + (digDirection * range), radius, digLayer).ToList();
+            foreach (Collider2D collider in collisions)
+            {
+                Debug.Log("Player.cs target " + collider.gameObject.name);
+                Destroy(collider.gameObject);
+            }
+        });
         resetState = new Timer(digDuration, () => {
             state = State.Normal;
         });
@@ -94,14 +104,12 @@ public class Player : MonoBehaviour
 
     void HandleDigging()
     {
+        digTimer.Tick(Time.deltaTime);
         resetState.Tick(Time.deltaTime);
-
-        List<Collider2D> collisions = Physics2D.OverlapCircleAll(transform.position + (digDirection * range), radius, digLayer).ToList();
-        foreach (Collider2D collider in collisions)
-        {
-            Debug.Log("Player.cs target " + collider.gameObject.name);
-            Destroy(collider.gameObject);
-        }
+        CalculateVelocity();
+        
+        //Debug.Log("[Player.cs/Update()] velocity = " + velocity);
+        controller.Move(velocity * Time.deltaTime, Vector2.zero);
     }
 
     public void SetDirectionalInput(Vector2 input)
@@ -146,6 +154,7 @@ public class Player : MonoBehaviour
     {
         state = State.Digging;
         digDirection = lastDirection;
+        digTimer.Begin();
         resetState.Begin();
     }
 

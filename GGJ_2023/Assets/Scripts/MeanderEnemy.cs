@@ -37,15 +37,17 @@ public class MeanderEnemy : Enemy
                     int direction = (UnityEngine.Random.value >= 0.5f)? 1 : -1;
                     RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right * direction, maxTravelDistance, controller.collisionMask);
                     
-                    //Debug.DrawRay(rayOrigin, Vector2.right * directionX, Color.red);
+                    //Debug.DrawRay(transform.position, Vector2.right * directionX, Color.red);
 
+                    float dist = maxTravelDistance;
                     if (hit)
                     {
-                        targetLocation = hit.point;
-                        return;
+                        dist = Vector3.Distance(transform.position, hit.point);
+                        //targetLocation = hit.point;
+                        //return;
                     }
 
-                    targetLocation = transform.position + ((Vector3.right * maxTravelDistance) * direction);
+                    targetLocation = transform.position + ((Vector3.right * dist) * direction);
                     directionalInput.x = direction;
                     timer = 0;
                 }
@@ -59,6 +61,15 @@ public class MeanderEnemy : Enemy
                 }
                 // Reached target location
                 if (Vector3.Distance(transform.position, targetLocation) < .2f)
+                {
+                    state = State.Idle;
+                    timer = 0; 
+                    directionalInput = Vector2.zero;
+                    return;
+                }
+
+                // Stopped by something
+                if (Mathf.Abs(velocity.x) <= Mathf.Epsilon)
                 {
                     state = State.Idle;
                     timer = 0; 
@@ -85,5 +96,29 @@ public class MeanderEnemy : Enemy
     {
         state = State.Idle;
         timer = 0;
+    }
+
+    void OnDrawGizmos()
+    {
+        /*
+        // Right
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, maxTravelDistance, controller.collisionMask);
+        
+        float rightDist = maxTravelDistance;
+        if (hitRight)
+        {
+            rightDist = Vector3.Distance(transform.position, hitRight.point); 
+        }
+        Debug.DrawRay(transform.position, Vector2.right * rightDist, Color.blue);
+
+        // Left
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, maxTravelDistance, controller.collisionMask);
+        
+        float leftDist = maxTravelDistance;
+        if (hitLeft)
+        {
+            leftDist = Vector3.Distance(transform.position, hitLeft.point); 
+        }
+        Debug.DrawRay(transform.position, Vector2.left * leftDist, Color.green);*/
     }
 }
