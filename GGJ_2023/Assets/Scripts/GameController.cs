@@ -34,8 +34,26 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        timerTime += Time.deltaTime;
     }
 
+    public float GetTime()
+    {
+        return timerTime;
+    }
 
+    public float GetIronBits()
+    {
+        return ironBits;
+    }
+
+    public void AddIron(int value = 1)
+    {
+        ironBits += value;
+    }
+
+    public int GetLevel()
+    {
+        return level;
+    }
 }
