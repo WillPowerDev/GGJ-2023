@@ -57,6 +57,13 @@ public class OptionsMenu : MonoBehaviour
                 volumeChangeable = false;
             }
         }
+        else
+        {
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+
+            }
+        }
     }
 
     public void VolumeControl()

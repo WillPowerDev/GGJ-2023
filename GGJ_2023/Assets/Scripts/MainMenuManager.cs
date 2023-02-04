@@ -55,11 +55,12 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
         {
             optionsMenu.gameObject.SetActive(false);
             isOptionsMenuOpen = false;
+            buttonsToActivate.gameObject.SetActive(true);
         }
 
             if (EventSystem.current.currentSelectedGameObject == null)
         {
-            FindObjectOfType<Button>().Select();
+            play.Select();
         }
     }
 
@@ -93,7 +94,6 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
         isOptionsMenuOpen = true;
         buttonsToActivate.gameObject.SetActive(false);
     }
-
     public void Credits()
     {
 
