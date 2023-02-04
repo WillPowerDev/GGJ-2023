@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 //using DG.Tweening;
 
-public class MainMenuManager : MonoBehaviour
+public class MainMenuManager : MonoBehaviour, ISelectHandler
 {
+    private GameController gameController;
+    [SerializeField] private GameObject text;
     [SerializeField] private GameObject buttonsToActivate;
     private bool canActivateButtons;
     [SerializeField] private GameObject gameSelectButtons;
@@ -15,14 +17,20 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button play;
     [SerializeField] private Button startGame;
 
+    [SerializeField] private GameObject optionsMenu;
+    private bool isOptionsMenuOpen;
+
     // Start is called before the first frame update
     void Start()
     {
         //DOTween.Init(autoKillMode, useSafeMode, logBehaviour);
+        text.gameObject.SetActive(true);
         buttonsToActivate.gameObject.SetActive(false);
         canActivateButtons = true;
         gameSelectButtons.gameObject.SetActive(false);
         gameSelectButtonsActivated = false;
+        optionsMenu.gameObject.SetActive(false);
+        isOptionsMenuOpen = false;
     }
 
     // Update is called once per frame
@@ -30,7 +38,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space) && canActivateButtons)
         {
-                        
+            text.gameObject.SetActive(false);
             buttonsToActivate.gameObject.SetActive(true);
             canActivateButtons = false;
         }
@@ -43,13 +51,16 @@ public class MainMenuManager : MonoBehaviour
             play.gameObject.GetComponent<Button>().Select();
         }
 
-        if(EventSystem.current.currentSelectedGameObject == null)
+        if (Input.GetKeyDown(KeyCode.Escape) && isOptionsMenuOpen)
+        {
+            optionsMenu.gameObject.SetActive(false);
+            isOptionsMenuOpen = false;
+        }
+
+            if (EventSystem.current.currentSelectedGameObject == null)
         {
             FindObjectOfType<Button>().Select();
         }
-
-
-
     }
 
     public void PlaySelect()
@@ -65,16 +76,41 @@ public class MainMenuManager : MonoBehaviour
     {
         if(levelToStart == null)
         {
+            //SceneManager.LoadSceneAsync(1);
             SceneManager.LoadScene(1);
         }
         else
         {
+            //SceneManager.LoadSceneAsync(levelToStart);
             SceneManager.LoadScene(levelToStart);
         }
+        Instantiate(gameController);
+    }
+
+    public void OptionsMenu()
+    {
+        optionsMenu.gameObject.SetActive(true);
+        isOptionsMenuOpen = true;
+        buttonsToActivate.gameObject.SetActive(false);
+    }
+
+    public void Credits()
+    {
+
     }
 
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnSelect()
+    {
+
     }
 }
