@@ -27,7 +27,12 @@ public class PlayerInput : MonoBehaviour
             player.OnJumpInputUp();
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Space))
+        {
+            player.Attack();
+        }
+
+        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.M))
         {
             player.Dig();
         }

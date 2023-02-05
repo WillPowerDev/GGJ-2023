@@ -68,6 +68,20 @@ public class MeanderEnemy : Enemy
                     return;
                 }
 
+                RaycastHit2D hitWall = Physics2D.Raycast(transform.position, Vector2.right * directionalInput.x, maxTravelDistance, controller.collisionMask);
+
+                if (hitWall)
+                {
+                    float dist = Vector3.Distance(transform.position, hitWall.point);
+
+                    if (dist <= .5)
+                    {
+                        state = State.Idle;
+                        timer = 0; 
+                        directionalInput = Vector2.zero;
+                        return;
+                    }
+                }
                 // Stopped by something
                 if (Mathf.Abs(velocity.x) <= Mathf.Epsilon)
                 {

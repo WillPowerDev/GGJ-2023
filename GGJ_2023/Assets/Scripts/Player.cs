@@ -10,6 +10,12 @@ public class Player : MonoBehaviour
     [SerializeField] float minJumpHeight = 1;
     [SerializeField] float timeToJumpApex = .4f;
 
+    [Header ("Attack")]
+    [SerializeField] GameObject attackObject;
+    [SerializeField] LayerMask attackLayer;
+    [SerializeField] float attackDuration;
+
+
     [Header ("Digging")]
     [SerializeField] LayerMask digLayer;
     [SerializeField] float range;
@@ -39,6 +45,7 @@ public class Player : MonoBehaviour
     enum State 
     {
         Normal,
+        Attack,
         Digging,
         Death,
     }
@@ -46,6 +53,7 @@ public class Player : MonoBehaviour
     State state = State.Normal;
 
     Timer digTimer;
+    Timer attackTimer;
     Timer resetState;
     void Start()
     {
@@ -63,6 +71,10 @@ public class Player : MonoBehaviour
                 Destroy(collider.gameObject);
             }
         });
+        attackTimer = new Timer(attackDuration, () => {
+            attackObject.SetActive(false);
+            state = State.Normal;
+        });
         resetState = new Timer(digDuration, () => {
             state = State.Normal;
         });
@@ -75,6 +87,9 @@ public class Player : MonoBehaviour
             default:
             case State.Normal:
                 HandleNormal();
+                break;
+            case State.Attack:
+                HandleAttack();
                 break;
             case State.Digging:
                 HandleDigging();
@@ -102,6 +117,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    void HandleAttack()
+    {
+        attackTimer.Tick(Time.deltaTime);
+        CalculateVelocity();
+        controller.Move(velocity * Time.deltaTime, Vector2.zero);
+    }
+
     void HandleDigging()
     {
         digTimer.Tick(Time.deltaTime);
@@ -115,7 +137,7 @@ public class Player : MonoBehaviour
     public void SetDirectionalInput(Vector2 input)
     {
         directionalInput = input;
-
+        if (input.x != 0) transform.localScale = new Vector3(-input.x, 1, 1);
         if (input == Vector2.zero) return;
 
         lastDirection = input;
@@ -156,6 +178,13 @@ public class Player : MonoBehaviour
         digDirection = lastDirection;
         digTimer.Begin();
         resetState.Begin();
+    }
+
+    public void Attack()
+    {
+        state = State.Attack;
+        attackObject.SetActive(true);
+        attackTimer.Begin();
     }
 
     void CalculateVelocity()
