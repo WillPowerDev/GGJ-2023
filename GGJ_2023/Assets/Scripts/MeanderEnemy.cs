@@ -20,7 +20,7 @@ public class MeanderEnemy : Enemy
     Vector3 targetLocation;
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         switch(state)
         {

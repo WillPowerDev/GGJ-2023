@@ -1,34 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    public CharacterController player;
-
+    public Player player;
+    Health playerHealth;
     float timerTime;
     float ironBits;
     float health;
     private float maxHealth;
-    float lives;
+    int lives;
     int level;
-
+    [SerializeField] int maxLives;
+    [SerializeField] string mainMenu;
     [SerializeField] List<string> levels;
 
     //Everything displayed on the UI should be passed through/handled here. Level advancement should be handled here as well.
 
     void Awake()
     {
+        if (Instance != null)
+        {
+            Debug.LogError("There's more than one GameController! " + transform + " - " + Instance);
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this.gameObject);
+        Reset();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void Reset()
     {
-        
+        lives = maxLives; 
+        ironBits = 0; 
+    }
+
+    public void Init(Player player)
+    {
+        this.player = player;
+        playerHealth = player.GetComponent<Health>();
+    }
+
+    public int GetMaxHealth()
+    {
+        return playerHealth.MaxHP;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return playerHealth.CurrentHP;
     }
 
     // Update is called once per frame
@@ -40,7 +65,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-
+            
         }
     }
 
@@ -67,12 +92,26 @@ public class GameController : MonoBehaviour
     // read the players health and determine if dies; reset level
     public void Death()
     {
-
+        Debug.Log("GameController.cs  lives: " + lives);
+        lives -= 1;
+        if (lives <= 0)
+        {
+            GameOver();
+            return;
+        }
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     //read the players lives and determine if game over. Load main menu scene
     public void GameOver()
     {
+        SceneManager.LoadScene(mainMenu);
+        Reset();
+    }
 
+    public void NextLevel()
+    {
+        level += 1;
+        SceneManager.LoadScene(levels[level]);
     }
 }
