@@ -7,6 +7,8 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
+    public LevelManager levelManager;
+
     public Player player;
     Health playerHealth;
     float timerTime;
@@ -16,6 +18,7 @@ public class GameController : MonoBehaviour
     int lives;
     int level;
     [SerializeField] int maxLives;
+    [SerializeField] float maxTime;
     [SerializeField] string mainMenu;
     [SerializeField] List<string> levels;
 
@@ -32,6 +35,8 @@ public class GameController : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
         Reset();
+
+
     }
 
     public void Reset()
@@ -44,6 +49,9 @@ public class GameController : MonoBehaviour
     {
         this.player = player;
         playerHealth = player.GetComponent<Health>();
+        levelManager = FindObjectOfType<LevelManager>();
+        levelManager.Initialize();
+
     }
 
     public int GetMaxHealth()
@@ -89,6 +97,11 @@ public class GameController : MonoBehaviour
         return level;
     }
 
+    public int GetLives()
+    {
+        return lives;
+    }
+
     // read the players health and determine if dies; reset level
     public void Death()
     {
@@ -113,5 +126,6 @@ public class GameController : MonoBehaviour
     {
         level += 1;
         SceneManager.LoadScene(levels[level]);
+        timerTime = maxTime;
     }
 }

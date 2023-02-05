@@ -16,6 +16,9 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
     private bool gameSelectButtonsActivated;
     [SerializeField] private Button play;
     [SerializeField] private Button startGame;
+    [SerializeField] private GameObject levelButtons;
+    [SerializeField] private Button firstLevelButton;
+    private bool levelSelectButtonsActivated;
 
     [SerializeField] private GameObject optionsMenu;
     private bool isOptionsMenuOpen;
@@ -29,6 +32,8 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
         canActivateButtons = true;
         gameSelectButtons.gameObject.SetActive(false);
         gameSelectButtonsActivated = false;
+        levelButtons.gameObject.SetActive(false);
+        levelSelectButtonsActivated = false;
         optionsMenu.gameObject.SetActive(false);
         isOptionsMenuOpen = false;
     }
@@ -59,7 +64,16 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
             play.Select();
         }
 
-            if (EventSystem.current.currentSelectedGameObject == null)
+        if (Input.GetKeyDown(KeyCode.Escape) && levelSelectButtonsActivated)
+        {
+            levelButtons.gameObject.SetActive(false);
+            levelSelectButtonsActivated = false;
+            gameSelectButtons.gameObject.SetActive(true);
+            gameSelectButtonsActivated = true;
+            startGame.Select();
+        }
+
+        if (EventSystem.current.currentSelectedGameObject == null)
         {
             play.Select();
         }
@@ -87,6 +101,15 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
             SceneManager.LoadScene(levelToStart);
         }
         Instantiate(gameController);
+    }
+
+    public void LevelSelect()
+    {
+        gameSelectButtonsActivated = false;
+        gameSelectButtons.gameObject.SetActive(false);
+        levelButtons.gameObject.SetActive(true);
+        levelSelectButtonsActivated = true;
+        firstLevelButton.Select();
     }
 
     public void OptionsMenu()
