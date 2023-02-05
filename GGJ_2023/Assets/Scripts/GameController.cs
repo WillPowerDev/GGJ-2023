@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour
         if (Instance != null)
         {
             Debug.LogError("There's more than one GameController! " + transform + " - " + Instance);
-            Destroy(gameObject);
+            Destroy(this.gameObject);
             return;
         }
         Instance = this;
@@ -66,7 +66,8 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(timerTime > 0)
+        if (player == null) return;
+        if (timerTime > 0)
         {
             timerTime -= Time.deltaTime;
         }
