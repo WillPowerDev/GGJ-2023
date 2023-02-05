@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        gameTimer.text = GameController.Instance.GetTime().ToString();
+        gameTimer.text = Mathf.Round(GameController.Instance.GetTime()).ToString();
         lifeCounter.text = GameController.Instance.GetLives().ToString();
         bitsCounter.text = ("x " + GameController.Instance.GetIronBits().ToString());
         isInitialized = false;
@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log(gameHealth + " is gameHealth");
         Debug.Log(GameController.Instance.GetCurrentHealth() + " is the current health");
-        gameTimer.text = GameController.Instance.GetTime().ToString();
+        gameTimer.text = Mathf.Round(GameController.Instance.GetTime()).ToString(); 
         lifeCounter.text = GameController.Instance.GetLives().ToString();
         bitsCounter.text = ("x " + GameController.Instance.GetIronBits().ToString());
 

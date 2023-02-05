@@ -35,8 +35,11 @@ public class GameController : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
         Reset();
+    }
 
-
+    void Start()
+    {
+        timerTime = maxTime;
     }
 
     public void Reset()
@@ -73,7 +76,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            
+            Death();
         }
     }
 
@@ -113,6 +116,7 @@ public class GameController : MonoBehaviour
             return;
         }
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        timerTime = maxTime;
     }
 
     //read the players lives and determine if game over. Load main menu scene
