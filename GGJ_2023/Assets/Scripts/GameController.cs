@@ -37,11 +37,6 @@ public class GameController : MonoBehaviour
         Reset();
     }
 
-    void Start()
-    {
-        timerTime = maxTime;
-    }
-
     public void Reset()
     {
         lives = maxLives; 
@@ -53,6 +48,7 @@ public class GameController : MonoBehaviour
         this.player = player;
         playerHealth = player.GetComponent<Health>();
         levelManager = FindObjectOfType<LevelManager>();
+        timerTime = maxTime;
         levelManager.Initialize();
 
     }

@@ -40,6 +40,8 @@ public class LevelManager : MonoBehaviour
     {
         gameHealth = GameController.Instance.GetCurrentHealth();
 
+
+
         for (int i = 0; i < GameController.Instance.GetMaxHealth(); i++)
         {
             if (i <= gameHealth)
