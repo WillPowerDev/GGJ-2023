@@ -100,6 +100,7 @@ public class GameController : MonoBehaviour
             return;
         }
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1;
     }
 
     //read the players lives and determine if game over. Load main menu scene
