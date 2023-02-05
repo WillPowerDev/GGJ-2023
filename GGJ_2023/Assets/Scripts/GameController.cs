@@ -34,7 +34,14 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timerTime += Time.deltaTime;
+        if(timerTime > 0)
+        {
+            timerTime -= Time.deltaTime;
+        }
+        else
+        {
+
+        }
     }
 
     public float GetTime()
@@ -55,5 +62,17 @@ public class GameController : MonoBehaviour
     public int GetLevel()
     {
         return level;
+    }
+
+    // read the players health and determine if dies; reset level
+    public void Death()
+    {
+
+    }
+
+    //read the players lives and determine if game over. Load main menu scene
+    public void GameOver()
+    {
+
     }
 }
