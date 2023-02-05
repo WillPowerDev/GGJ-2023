@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
 
     public Player player;
     Health playerHealth;
+    PlayerAnimator playerAnimator;
     float timerTime;
     float ironBits;
     float health;
@@ -46,6 +47,7 @@ public class GameController : MonoBehaviour
     public void Init(Player player)
     {
         this.player = player;
+        playerAnimator = player.GetComponent<PlayerAnimator>();
         playerHealth = player.GetComponent<Health>();
         levelManager = FindObjectOfType<LevelManager>();
         timerTime = maxTime;

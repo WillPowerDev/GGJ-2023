@@ -213,6 +213,7 @@ public class Player : MonoBehaviour
         if (controller.collisions.below)
         {
             playerAnimator.JumpAnimation();
+            SoundManager.Instance.PlaySound(Sound.jump);
             // not jumping against max slope
             if (controller.collisions.slidingDownMaxSlope)
             {
@@ -240,6 +241,7 @@ public class Player : MonoBehaviour
     public void Dig()
     {
         state = State.Digging;
+        SoundManager.Instance.PlaySound(Sound.dig);
         digDirection = lastDirection;
         playerAnimator.AttackAnimation();
         digTimer.Begin();
@@ -249,6 +251,7 @@ public class Player : MonoBehaviour
     public void Attack()
     {
         state = State.Attack;
+        SoundManager.Instance.PlaySound(Sound.attack);
         playerAnimator.AttackAnimation();
         attackObject.SetActive(true);
         attackTimer.Begin();
@@ -264,6 +267,7 @@ public class Player : MonoBehaviour
     void Health_OnDamaged(object sender, EventArgs e)
     {
         Debug.Log("Player.cs  hurt");
+        SoundManager.Instance.PlaySound(Sound.takeDamage);
         playerAnimator.HurtAnimation(); 
         animHurting = true;
     }

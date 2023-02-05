@@ -19,6 +19,7 @@ public class LevelManager : MonoBehaviour
         lifeCounter.text = GameController.Instance.GetLives().ToString();
         bitsCounter.text = ("x " + GameController.Instance.GetIronBits().ToString());
         isInitialized = false;
+        SoundManager.Instance.PlayMusic(Music.game);
     }
 
     void Update()

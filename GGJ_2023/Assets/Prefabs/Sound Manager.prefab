@@ -44,6 +44,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74bae3c8a623c9e4cb81ef10b611df9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _soundEffects: []
-  _musicTracks: []
+  _soundEffects:
+  - _soundOption: 0
+    _clip: {fileID: 8300000, guid: a1986ac62f903e24cb34805f4d923b5b, type: 3}
+  - _soundOption: 1
+    _clip: {fileID: 8300000, guid: f46421fd5a77c5440a79eb6334f9da04, type: 3}
+  - _soundOption: 2
+    _clip: {fileID: 0}
+  - _soundOption: 3
+    _clip: {fileID: 8300000, guid: 4b7333ba2e0b53d4bafb5cbf2b43580a, type: 3}
+  - _soundOption: 4
+    _clip: {fileID: 8300000, guid: dd3824e65ca827a4c851023a03a96618, type: 3}
+  _musicTracks:
+  - _musicOption: 0
+    _track: {fileID: 0}
+  - _musicOption: 1
+    _track: {fileID: 8300000, guid: 52ae43b97a635ff42a93fcd487fb6794, type: 3}
   _numSoundEffectSources: 5

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    Animator animator;
+    [SerializeField] Animator animator;
 
     int playerIdle;
     int playerWalk;
@@ -16,7 +16,7 @@ public class PlayerAnimator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
 
         playerIdle = Animator.StringToHash("DripIdle");
         playerWalk = Animator.StringToHash("DripWalk");

@@ -18,6 +18,7 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
     [SerializeField] private Button startGame;
     [SerializeField] private GameObject levelButtons;
     [SerializeField] private Button firstLevelButton;
+    [SerializeField] private GameObject logo;
     private bool levelSelectButtonsActivated;
 
     [SerializeField] private GameObject optionsMenu;
@@ -36,6 +37,7 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
         levelSelectButtonsActivated = false;
         optionsMenu.gameObject.SetActive(false);
         isOptionsMenuOpen = false;
+        logo.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -70,6 +72,7 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
             levelSelectButtonsActivated = false;
             gameSelectButtons.gameObject.SetActive(true);
             gameSelectButtonsActivated = true;
+            logo.gameObject.SetActive(true);
             startGame.Select();
         }
 
@@ -110,6 +113,8 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
         levelButtons.gameObject.SetActive(true);
         levelSelectButtonsActivated = true;
         firstLevelButton.Select();
+        logo.gameObject.SetActive(false);
+
     }
 
     public void OptionsMenu()
@@ -120,7 +125,7 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
     }
     public void Credits()
     {
-
+        SceneManager.LoadScene(2);
     }
 
     public void QuitGame()
@@ -133,8 +138,8 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
         throw new System.NotImplementedException();
     }
 
-    public void OnSelect()
+    public void ButtonSound()
     {
-
+        SoundManager.Instance.PlaySound(Sound.buttonSFX);
     }
 }

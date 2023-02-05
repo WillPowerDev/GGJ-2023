@@ -1,9 +1,10 @@
 public enum Sound
 {
     buttonSFX = 0,
-    movementSFX,
+    attack,
     takeDamage,
-    levelComplete,
+    jump,
+    dig,
     None
 }
 
@@ -11,7 +12,5 @@ public enum Music
 {
     title = 0,
     game,
-    credits,
-    victory,
     None
 }

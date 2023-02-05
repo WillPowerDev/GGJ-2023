@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5684909541367359135}
   - component: {fileID: 5684909541367359134}
   - component: {fileID: 5684909541367359201}
+  - component: {fileID: 784077741052885035}
   m_Layer: 0
   m_Name: Collectables
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_Children:
   - {fileID: 5684909541383740984}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &5684909541367359134
 CircleCollider2D:
@@ -62,6 +63,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dffdd2ef305f2ac4e9832e0951ea0895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  value: 1
+--- !u!50 &784077741052885035
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5684909541367359200}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &5684909541383740987
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +158,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 27f64008fbb85e1438f18ac2ae8e91c2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
