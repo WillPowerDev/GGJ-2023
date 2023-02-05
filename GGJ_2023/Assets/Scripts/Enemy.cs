@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float moveSpeed; 
     [SerializeField] protected float accelerationTimeAirborne = .1f;
     [SerializeField] protected float accelerationTimeGrounded = .05f;
+    [SerializeField] GameObject deathParticlePrefab;
+    [SerializeField] GameObject dropCollectablePrefab;
+    [SerializeField] float dropChance;
 
     [SerializeField] Vector2 knockbackIntensity;
 
@@ -28,7 +31,7 @@ public class Enemy : MonoBehaviour
 
     protected bool facingRight;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         controller = GetComponent<Controller2D>();
         health = GetComponent<Health>();
@@ -39,7 +42,7 @@ public class Enemy : MonoBehaviour
 
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         HandleMovement();
 
@@ -72,7 +75,14 @@ public class Enemy : MonoBehaviour
     {
         //enemyDeath.enabled = true;
         //enemyDeath.SetVelocity(velocity);
-        this.enabled = false;
+        //this.enabled = false;
+        if(!this.gameObject.scene.isLoaded) return;
+        Instantiate(deathParticlePrefab, transform.position, Quaternion.identity);
+        if (UnityEngine.Random.value <= dropChance)
+        {
+            Instantiate(dropCollectablePrefab, transform.position, Quaternion.identity);
+        }
+        Destroy(this.gameObject);
         return;
     }
 
@@ -104,6 +114,15 @@ public class Enemy : MonoBehaviour
         //}
         player = null;
         return false;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            Health _health = other.GetComponent<Health>();
+            _health.TakeDamage();
+        }
     }
 
     public virtual void DealDamage()

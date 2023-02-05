@@ -20,6 +20,7 @@ public class Health : MonoBehaviour
 
     Timer invincibilityTimer;
 
+    public bool Invincible {get {return invincible; }}
     public int CurrentHP {get {return currentHealth; }}
     public int PreviousHP {get {return previousHealth; }}
     public int MaxHP {get {return maxHealth; }}
@@ -39,7 +40,7 @@ public class Health : MonoBehaviour
         invincibilityTimer.Tick(Time.deltaTime);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage = 1)
     {
         if (!invincible)
         {

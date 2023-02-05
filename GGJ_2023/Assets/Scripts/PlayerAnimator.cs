@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
+    Animator animator;
 
     int playerIdle;
     int playerWalk;
@@ -15,6 +16,8 @@ public class PlayerAnimator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
+
         playerIdle = Animator.StringToHash("DripIdle");
         playerWalk = Animator.StringToHash("DripWalk");
         playerJump = Animator.StringToHash("DripJump");
@@ -23,9 +26,37 @@ public class PlayerAnimator : MonoBehaviour
         playerDead = Animator.StringToHash("DripDead");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void IdleAnimation()
     {
-        
+        animator.CrossFade(playerIdle, 0);
+    }
+
+    public void RunAnimation()
+    {
+        animator.CrossFade(playerWalk, 0);
+
+    }
+
+    public void JumpAnimation()
+    {
+        animator.CrossFade(playerJump, 0);
+
+    }
+
+    public void AttackAnimation()
+    {
+        animator.CrossFade(playerAttack, 0);
+
+    }
+
+    public void HurtAnimation()
+    {
+        animator.CrossFade(playerHurt, 0);
+
+    }
+
+    public void DeadAnimation()
+    {
+        animator.CrossFade(playerDead, 0);
     }
 }

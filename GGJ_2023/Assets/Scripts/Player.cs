@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +31,13 @@ public class Player : MonoBehaviour
     float maxJumpVelocity;
     float minJumpVelocity;
 
+
     Vector3 velocity;
     float velocityXSmoothing;
     float timeToWallUnstick;
 
     Controller2D controller;
+    Health health;
 
     Vector2 directionalInput;
     Vector2 lastDirection;
@@ -52,12 +55,23 @@ public class Player : MonoBehaviour
 
     State state = State.Normal;
 
+    PlayerAnimator playerAnimator;
+    bool animRunning;
+    bool animJumping; 
+    bool animHurting;
+    bool facingRight;
+
     Timer digTimer;
     Timer attackTimer;
     Timer resetState;
     void Start()
     {
         controller = GetComponent<Controller2D>();
+        playerAnimator = GetComponent<PlayerAnimator>();
+        health = GetComponent<Health>();
+
+        health.OnDamaged += Health_OnDamaged;
+        health.OnDead += Health_OnDead;
 
         gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
@@ -78,6 +92,8 @@ public class Player : MonoBehaviour
         resetState = new Timer(digDuration, () => {
             state = State.Normal;
         });
+
+        GameController.Instance.Init(this);
     }
 
     void Update()
@@ -95,12 +111,13 @@ public class Player : MonoBehaviour
                 HandleDigging();
                 break;
         }
+        
     }
 
     void HandleNormal()
     {
         CalculateVelocity();
-        
+        HandleAnimation();
         //Debug.Log("[Player.cs/Update()] velocity = " + velocity);
         controller.Move(velocity * Time.deltaTime, directionalInput);
 
@@ -134,10 +151,54 @@ public class Player : MonoBehaviour
         controller.Move(velocity * Time.deltaTime, Vector2.zero);
     }
 
+    private void HandleAnimation()
+    {
+
+        if (animHurting)
+        {
+            if (health.Invincible) return;
+
+            animHurting = false;
+        }
+        //if (facingRight) { /*playerSprite.*/transform.localScale = Vector3.one; }
+        //else { /*playerSprite.*/transform.localScale = new Vector3(-1, 1, 1); } 
+
+        if (!controller.collisions.below)
+        {
+            animRunning = false;
+            if (!animJumping)
+            {
+                playerAnimator.JumpAnimation();
+                animJumping = true;
+            }
+            //if (velocity.y < 0) animator.CrossFade(animFall, 0);
+            //else animator.CrossFade(animJump, 0);
+            return;
+        }
+    
+        if ((Mathf.Abs(velocity.x) > 0.25f) || (Mathf.Abs(directionalInput.x) > 0))
+        {
+            if (!animRunning)
+            {
+                playerAnimator.RunAnimation();
+                animRunning = true;
+            }
+            return;
+        }
+        
+        if (/*velocity.x == 0 ||*/ directionalInput.x == 0) animRunning = false;
+        
+        playerAnimator.IdleAnimation();
+    }
+
     public void SetDirectionalInput(Vector2 input)
     {
         directionalInput = input;
-        if (input.x != 0) transform.localScale = new Vector3(-input.x, 1, 1);
+        if (input.x != 0) 
+        {
+            transform.localScale = new Vector3(-input.x, 1, 1);
+            facingRight = input.x >= 1;
+        }
         if (input == Vector2.zero) return;
 
         lastDirection = input;
@@ -148,6 +209,7 @@ public class Player : MonoBehaviour
         // Colliding with a ground object
         if (controller.collisions.below)
         {
+            playerAnimator.JumpAnimation();
             // not jumping against max slope
             if (controller.collisions.slidingDownMaxSlope)
             {
@@ -176,6 +238,7 @@ public class Player : MonoBehaviour
     {
         state = State.Digging;
         digDirection = lastDirection;
+        playerAnimator.AttackAnimation();
         digTimer.Begin();
         resetState.Begin();
     }
@@ -183,6 +246,7 @@ public class Player : MonoBehaviour
     public void Attack()
     {
         state = State.Attack;
+        playerAnimator.AttackAnimation();
         attackObject.SetActive(true);
         attackTimer.Begin();
     }
@@ -192,5 +256,16 @@ public class Player : MonoBehaviour
         float targetVelocityX = directionalInput.x * moveSpeed;
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
         velocity.y += gravity * Time.deltaTime;
+    }
+
+    void Health_OnDamaged(object sender, EventArgs e)
+    {
+        playerAnimator.HurtAnimation(); 
+        animHurting = true;
+    }
+
+    void Health_OnDead(object sender, EventArgs e)
+    {
+        GameController.Instance.Death();
     }
 }
