@@ -56,6 +56,7 @@ public class MainMenuManager : MonoBehaviour, ISelectHandler
             optionsMenu.gameObject.SetActive(false);
             isOptionsMenuOpen = false;
             buttonsToActivate.gameObject.SetActive(true);
+            play.Select();
         }
 
             if (EventSystem.current.currentSelectedGameObject == null)
