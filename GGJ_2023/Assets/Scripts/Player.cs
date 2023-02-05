@@ -93,6 +93,10 @@ public class Player : MonoBehaviour
             state = State.Normal;
         });
 
+        animRunning = false;
+        animJumping = false;
+        animHurting = false;
+
         GameController.Instance.Init(this);
     }
 
@@ -153,7 +157,6 @@ public class Player : MonoBehaviour
 
     private void HandleAnimation()
     {
-
         if (animHurting)
         {
             if (health.Invincible) return;
@@ -260,6 +263,7 @@ public class Player : MonoBehaviour
 
     void Health_OnDamaged(object sender, EventArgs e)
     {
+        Debug.Log("Player.cs  hurt");
         playerAnimator.HurtAnimation(); 
         animHurting = true;
     }

@@ -29,7 +29,7 @@ public class Health : MonoBehaviour
     {
         currentHealth = maxHealth;
         previousHealth = currentHealth;
-
+        invincible = false;
         invincibilityTimer = new Timer(invincibileTimer, () => {
             invincible = false;
         });
